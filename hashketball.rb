@@ -22,13 +22,9 @@ def shoe_size(name)
 end
 
 def team_colors(team)
-    colors = []
-    game_hash.each do |location,data|
-        if data[:team_name] == team
-        colors = data[:colors]
-        end
-    end
-    colors
+    game_hash.find do |location,data|
+        data[:team_name] == team
+    end[1][:colors]
 end
 
 def team_names
@@ -74,6 +70,23 @@ def big_shoe_rebounds
     rebounds
 end
 
+def winning_team
+    team1 = 0
+    team2 = 0
+    winning = ""
+    game_hash[:home][:players].each do |name, info|
+        team1 += info[:points]
+    end
+    game_hash[:away][:players].each do |name, info|
+        team2 += info[:points]
+    end
+    if team1 > team2
+        winning = game_hash[:home][:team_name]
+    else
+        winning = game_hash[:away][:team_name]
+    end
+    winning
+end
 
 def game_hash
     {
@@ -191,3 +204,5 @@ def game_hash
       }
     }
 end
+
+puts winning_team
